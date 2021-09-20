@@ -3,7 +3,10 @@ const http = require('http');
 
 // pull in URL and query modules (for URL parsing)
 const url = require('url');
+const query = require('querystring');
 const path = require('path');
+
+const _ = require("underscore");
 
 const jsonHandler = require('./jsonResponses');
 const htmlHandler = require('./htmlResponses');
@@ -23,8 +26,11 @@ const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   const { pathname } = parsedUrl;
 
+  const params = query.parse(parsedUrl.query);
+  const {limit} = params;
+
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response);
+    urlStruct[pathname](request, response,params);
   } else {
     urlStruct.notFound(request, response);
   }

@@ -14,19 +14,23 @@ const jokes = [
   { q: 'What do you get when you cross a snowman with a vampire?', a: 'Frostbite!' },
 ];
 
+// pull in underscore.js for shuffle
+const _ = require("underscore");
+
 // 12 jokes randomized for json posting
-const getRandomJokeJSON = () => {
-  const number = Math.floor(Math.random() * (11 - 0)) + 0;
-  const responseObj = {
-    q: jokes[number].q,
-    a: jokes[number].a,
-  };
+const getRandomJokeJSON = (limit = 1) => {
+  limit = Math.floor(limit);
+  if(limit < 1){limit=1}
+  if(limit > jokes.length)(limit=jokes.length)
+
+  const responseObj = _.shuffle(jokes).slice(0,limit);
+
   return JSON.stringify(responseObj);
 };
 
-const getRandomJokeResponse = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/plain' });
-  response.write(getRandomJokeJSON());
+const getRandomJokeResponse = (request, response, params) => {
+  response.writeHead(200, { 'Content-Type': 'application/json' });
+  response.write(getRandomJokeJSON(params.limit));
   response.end();
 };
 
