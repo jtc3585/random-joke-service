@@ -6,8 +6,6 @@ const url = require('url');
 const query = require('querystring');
 const path = require('path');
 
-const _ = require("underscore");
-
 const jsonHandler = require('./jsonResponses');
 const htmlHandler = require('./htmlResponses');
 
@@ -27,10 +25,10 @@ const onRequest = (request, response) => {
   const { pathname } = parsedUrl;
 
   const params = query.parse(parsedUrl.query);
-  const {limit} = params;
+  const { limit } = params;
 
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response,params);
+    urlStruct[pathname](request, response, params);
   } else {
     urlStruct.notFound(request, response);
   }

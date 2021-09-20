@@ -20,13 +20,15 @@
     "url": "https://github.com/jtc3585/random-joke-service/issues"
   },
   "homepage": "https://github.com/jtc3585/random-joke-service#readme",
-  "dependencies": {},
+  "dependencies": {
+    "underscore": "^1.13.1"
+  },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.24.2",
-    "nodemon": "^2.0.12",
-    "underscore": "^1.13.1"
+    "nodemon": "^2.0.12"
+
   }
 }

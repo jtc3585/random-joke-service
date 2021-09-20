@@ -15,15 +15,15 @@ const jokes = [
 ];
 
 // pull in underscore.js for shuffle
-const _ = require("underscore");
+const _ = require('underscore');
 
 // 12 jokes randomized for json posting
 const getRandomJokeJSON = (limit = 1) => {
   limit = Math.floor(limit);
-  if(limit < 1){limit=1}
-  if(limit > jokes.length)(limit=jokes.length)
+  if (limit < 1) { limit = 1; }
+  if (limit > jokes.length)(limit = jokes.length);
 
-  const responseObj = _.shuffle(jokes).slice(0,limit);
+  const responseObj = _.shuffle(jokes).slice(0, limit);
 
   return JSON.stringify(responseObj);
 };
