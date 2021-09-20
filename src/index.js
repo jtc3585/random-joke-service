@@ -11,6 +11,7 @@ const htmlHandler = require('./htmlResponses');
 
 const urlStruct = {
   '/random-joke': jsonHandler.getRandomJokeResponse,
+  '/random-jokes': jsonHandler.getRandomJokeResponse,
   notFound: htmlHandler.get404Response,
 };
 
