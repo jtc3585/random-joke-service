@@ -12,6 +12,8 @@
     },
     "rules": {
         "no-unused-vars":"warn",
-        "no-param-reassign":"warn"
-    }
+        "no-param-reassign":"warn",
+        "no-plusplus":"warn",
+        "no-undef":"warn"
+        }
 }

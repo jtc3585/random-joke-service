@@ -6,7 +6,7 @@ const url = require('url');
 const query = require('querystring');
 const path = require('path');
 
-const jsonHandler = require('./jsonResponses');
+const jsonHandler = require('./responses');
 const htmlHandler = require('./htmlResponses');
 
 const urlStruct = {
@@ -28,8 +28,11 @@ const onRequest = (request, response) => {
   const params = query.parse(parsedUrl.query);
   const { limit } = params;
 
+  let acceptedTypes = request.headers.accept && request.headers.accept.split(',');
+  acceptedTypes = acceptedTypes || [];
+
   if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response, params);
+    urlStruct[pathname](request, response, params, acceptedTypes);
   } else {
     urlStruct.notFound(request, response);
   }

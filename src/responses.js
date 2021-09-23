@@ -18,20 +18,39 @@ const jokes = [
 const _ = require('underscore');
 
 // 12 jokes randomized for json posting
-const getRandomJokeJSON = (limit = 1) => {
+const getRandomJokeJSON = (limit = 1, type) => {
   limit = Math.floor(limit);
   if (limit < 1) { limit = 1; }
   if (limit > jokes.length)(limit = jokes.length);
 
   const responseObj = _.shuffle(jokes).slice(0, limit);
+  if (type === true) {
+    let responseXML = '<response>';
+    for (i = 0; i < limit; i++) {
+      responseXML += `
+      <joke>
+        <q>${responseObj[i].q}</q>
+        <a>${responseObj[i].a}</a>
+      </joke>
+      `;
+    }
+    responseXML += '</response>';
+    return responseXML;
+  }
 
   return JSON.stringify(responseObj);
 };
 
-const getRandomJokeResponse = (request, response, params) => {
-  response.writeHead(200, { 'Content-Type': 'application/json' });
-  response.write(getRandomJokeJSON(params.limit));
-  response.end();
+const getRandomJokeResponse = (request, response, params, acceptedTypes) => {
+  if (acceptedTypes.includes('text/xml') === true) {
+    response.writeHead(200, { 'Content-Type': 'text/xml' });
+    response.write(getRandomJokeJSON(params.limit, true));
+    response.end();
+  } else {
+    response.writeHead(200, { 'Content-Type': 'application/json' });
+    response.write(getRandomJokeJSON(params.limit, false));
+    response.end();
+  }
 };
 
 module.exports.getRandomJokeResponse = getRandomJokeResponse;
