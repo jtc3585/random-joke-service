@@ -18,7 +18,7 @@ const jokes = [
 const _ = require('underscore');
 
 // 12 jokes randomized for json posting
-const getRandomJokeJSON = (limit = 1, type) => {
+const getRandomJoke = (limit = 1, type) => {
   limit = Math.floor(limit);
   if (limit < 1) { limit = 1; }
   if (limit > jokes.length)(limit = jokes.length);
@@ -41,15 +41,32 @@ const getRandomJokeJSON = (limit = 1, type) => {
   return JSON.stringify(responseObj);
 };
 
-const getRandomJokeResponse = (request, response, params, acceptedTypes) => {
+// ALWAYS GIVE CREDIT - in your code comments and documentation
+// Source: https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string/29955838
+// Refactored to an arrow function by ACJ
+const getBinarySize = string => Buffer.byteLength(string, 'utf8');
+
+
+const getRandomJokeResponse = (request, response, params, acceptedTypes, httpMethod) => {
   if (acceptedTypes.includes('text/xml') === true) {
-    response.writeHead(200, { 'Content-Type': 'text/xml' });
-    response.write(getRandomJokeJSON(params.limit, true));
+    if(httpMethod === "HEAD"){
+      response.writeHead(200,{ 'Content-Type': 'text/xml','Content-Length': getBinarySize(getRandomJoke(params.limit,true))});
+      response.end();
+    }else{    
+    response.writeHead(200,{ 'Content-Type': 'text/xml' });
+    response.write(getRandomJoke(params.limit, true));
     response.end();
+  }
+
   } else {
+    if(httpMethod === "HEAD"){
+      response.writeHead(200,{ 'Content-Type': 'application/json','Content-Length': getBinarySize(getRandomJoke(params.limit,false))})
+      response.end();
+    }else{
     response.writeHead(200, { 'Content-Type': 'application/json' });
-    response.write(getRandomJokeJSON(params.limit, false));
+    response.write(getRandomJoke(params.limit, false));
     response.end();
+    }
   }
 };
 
